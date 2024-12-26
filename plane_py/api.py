@@ -165,7 +165,7 @@ class PlaneClient:
         Delete an existing project.
 
         Args:
-           project_id: The ID of the project to delete (Required)
+            project_id: The ID of the project to delete (Required)
 
         Returns:
             bool: True if project was deleted successfully, False otherwise
