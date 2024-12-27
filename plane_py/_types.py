@@ -8,6 +8,55 @@ class Task(TypedDict):
     status: str
 
 @dataclass
+class State:
+    """
+    Represents a Plane state.
+    
+    :param id: UUID of the state
+    :type id: str
+    :param created_at: Timestamp of when the state was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the state was last updated
+    :type updated_at: str
+    :param name: Name of the state
+    :type name: str
+    :param description: Description of the state
+    :type description: str
+    :param color: Color code for the state
+    :type color: str
+    :param workspace_slug: Slug of the workspace
+    :type workspace_slug: str
+    :param sequence: Sequence number of the state
+    :type sequence: str
+    :param group: Group the state belongs to
+    :type group: str
+    :param default: Whether this is the default state
+    :type default: bool
+    :param created_by: UUID of the user who created the state
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the state
+    :type updated_by: str
+    :param project: UUID of the project this state belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this state belongs to
+    :type workspace: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+    color: str
+    workspace_slug: str
+    sequence: str
+    group: str
+    default: bool
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+
+@dataclass
 class Project:
     """
     Represents a Plane project.

@@ -1,9 +1,7 @@
 import aiohttp
 import logging
 from ._types import *
-from errors import *
-
-logging.basicConfig(filename='plane-py.log', level=logging.INFO)
+from .errors import *
 
 class PlaneClient:
     def __init__(self, api_token: str, workspace_slug: str, base_url: str = "https://api.plane.so"):
@@ -58,7 +56,7 @@ class PlaneClient:
             return projects
             
         except Exception as e:
-            logging.log(msg=f"Error getting projects: {e}", level=1)
+            logging.error(f"Error getting projects: {e}")
             return []
         
     async def get_project_details(self, project_id: str) -> Project:
@@ -125,7 +123,7 @@ class PlaneClient:
             return Project(**filtered_response)
             
         except Exception as e:
-            logging.error("Error updating project: {e}")
+            logging.error(f"Error updating project: {e}")
             raise PlaneError("Error updating project")
 
     async def create_project(self, name: str, identifier: str, **kwargs) -> Project:
@@ -163,7 +161,7 @@ class PlaneClient:
             return Project(**filtered_response)
 
         except Exception as e:
-            logging.error("Error creating Project: {e}")
+            logging.error(f"Error creating Project: {e}")
             raise PlaneError("Error creating project")
 
     async def delete_project(self, project_id: str) -> bool:
@@ -188,8 +186,103 @@ class PlaneClient:
             return True
 
         except Exception as e:
-            logging.error("Error deleting project: {e}")
+            logging.error(f"Error deleting project: {e}")
             return False
+        
+    async def get_states(self, project_id: str) -> list[State]:
+        """
+        Fetch all states for a project.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+
+        Returns:
+            list[State]: List of State objects
+        """
+        try:
+            response = await self._request("GET", f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/states/")
+            
+            if isinstance(response, dict) and 'results' in response:
+                project_states = response['results']
+            else:
+                raise ValueError(f"Unexpected response format: {type(response)}")
+            
+            states = []
+            for state_data in project_states:
+                # Ensure workspace_slug is set from current client
+                state_data['workspace_slug'] = self.workspace_slug
+                
+                try:
+                    # Create State object with the complete data
+                    state = State(
+                        id=state_data.get('id', ''),
+                        created_at=state_data.get('created_at', ''),
+                        updated_at=state_data.get('updated_at', ''),
+                        name=state_data.get('name', ''),
+                        description=state_data.get('description', ''),
+                        color=state_data.get('color', ''),
+                        workspace_slug=self.workspace_slug,  # Use client's workspace_slug
+                        sequence=str(state_data.get('sequence', '')),
+                        group=state_data.get('group', ''),
+                        default=state_data.get('default', False),
+                        created_by=state_data.get('created_by', ''),
+                        updated_by=state_data.get('updated_by', ''),
+                        project=state_data.get('project', ''),
+                        workspace=state_data.get('workspace', '')
+                    )
+                    states.append(state)
+                except TypeError as e:
+                    logging.error(f"Error getting project state: {e}")
+                    logging.info(f"Data: {state_data}")
+                    continue
+                    
+            return states
+            
+        except Exception as e:
+            logging.error(f"Error getting states: {e}")
+            raise PlaneError("Error fetching project states")
+        
+    async def get_state_details(self, project_id: str, state_id: str) -> State:
+        """
+        Fetch specific state details for a project.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+            state_id (str): ID of the state to fetch (Required)
+            
+        Returns:
+            State: State object if found
+        """
+        try:
+            state_data = await self._request(
+                "GET", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/states/{state_id}/"
+            )
+            
+            if not isinstance(state_data, dict):
+                raise ValueError(f"Unexpected response format: {type(state_data)}")
+            
+            # Create State object with the complete data
+            return State(
+                id=state_data.get('id', ''),
+                created_at=state_data.get('created_at', ''),
+                updated_at=state_data.get('updated_at', ''),
+                name=state_data.get('name', ''),
+                description=state_data.get('description', ''),
+                color=state_data.get('color', ''),
+                workspace_slug=self.workspace_slug,  # Use client's workspace_slug
+                sequence=str(state_data.get('sequence', '')),
+                group=state_data.get('group', ''),
+                default=state_data.get('default', False),
+                created_by=state_data.get('created_by', ''),
+                updated_by=state_data.get('updated_by', ''),
+                project=state_data.get('project', ''),
+                workspace=state_data.get('workspace', '')
+            )
+            
+        except Exception as e:
+            logging.error(f"Error getting state details: {e}")
+            raise PlaneError("Error fetching state details")
 
     async def get_tasks(self, project_id: str):
         """Fetch tasks for a specific project."""
