@@ -321,3 +321,107 @@ async def test_get_issue_comments(client: PlaneClient):
         assert isinstance(issue_comments, list[IssueComment])
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_comment_details(client: PlaneClient):
+    try:
+        issue_comment = await client.get_comment_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            comment_id = "d26db721-6c86-4071-b948-1005be594bd3"
+        )
+        assert isinstance(issue_comment, IssueComment)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_comment(client: PlaneClient):
+    try:
+        new_comment = await client.create_comment(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            comment_html="This is a New Comment"
+        )
+        assert isinstance(new_comment, IssueComment)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_comment(client: PlaneClient):
+    try:
+        updated_comment = await client.update_comment(
+            comment_html="This is an Updated Comment",
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            comment_id="d26db721-6c86-4071-b948-1005be594bd3"
+        )
+        assert isinstance(updated_comment, IssueComment)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_comment(client: PlaneClient):
+    try:
+        deleted_comment = await client.delete_comment(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            comment_id="d26db721-6c86-4071-b948-1005be594bd3"
+        )
+        assert isinstance(deleted_comment, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_modules(client: PlaneClient):
+    try:
+        project_modules = await client.get_modules(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(project_modules, list[Module])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_module_details(client: PlaneClient):
+    try:
+        project_module = await client.get_module_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="81522e51-d598-4b41-85f8-dd4d562a91a0"
+        )
+        assert isinstance(project_module, Module)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_module(client: PlaneClient):
+    try:
+        new_module = await client.create_module(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            name="This is a New Module"
+        )
+        assert isinstance(new_module, Module)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_module(client: PlaneClient):
+    try:
+        updated_module = await client.update_module(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="83c29ebc-4f96-45da-8982-8f0f7c36fba9",
+            name="This is an Updated Module"
+        )
+        assert isinstance(updated_module, Module)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_module(client: PlaneClient):
+    try:
+        deleted_module = await client.delete_module(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="83c29ebc-4f96-45da-8982-8f0f7c36fba9"
+        )
+        assert isinstance(deleted_module, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")

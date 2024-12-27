@@ -418,3 +418,64 @@ class IssueComment:
     workspace: str
     issue: str
     actor: str
+
+@dataclass
+class Module:
+    """
+    Represents a Plane module.
+    
+    :param id: UUID of the module
+    :type id: str
+    :param created_at: Timestamp of when the module was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the module was last updated
+    :type updated_at: str
+    :param name: Name of the module
+    :type name: str
+    :param description: Description of the module
+    :type description: str
+    :param description_text: Plain text description of the module
+    :type description_text: Optional[str]
+    :param description_html: HTML formatted description of the module
+    :type description_html: Optional[str]
+    :param start_date: Start date of the module
+    :type start_date: Optional[str]
+    :param target_date: Target date of the module
+    :type target_date: Optional[str]
+    :param status: Status of the module
+    :type status: str
+    :param view_props: View properties of the module
+    :type view_props: dict
+    :param sort_order: Sorting order of the module
+    :type sort_order: float
+    :param created_by: UUID of the user who created the module
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the module
+    :type updated_by: str
+    :param project: UUID of the project this module belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this module belongs to
+    :type workspace: str
+    :param lead: UUID of the lead of the module
+    :type lead: Optional[str]
+    :param members: List of UUIDs of members of the module
+    :type members: list[str]
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+    description_text: Optional[str]
+    description_html: Optional[str]
+    start_date: Optional[str]
+    target_date: Optional[str]
+    status: str
+    view_props: dict
+    sort_order: float
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    lead: Optional[str]
+    members: list[str]

@@ -545,11 +545,12 @@ class PlaneClient:
             logging.error(f"Error creating Label: {e}")
             raise PlaneError("Error creating label")
         
-    async def update_label(self, project_id: str, label_id: str, **kwargs) -> Label:
+    async def update_label(self, name: str, project_id: str, label_id: str, **kwargs) -> Label:
         """
         Update a label with provided fields.
 
         Args:
+            name: The name of the label to update (Required)
             project_id (str): The ID of the project to update (Required)
             label_id (str): The ID of the label to update (Required)
             **kwargs: Any valid Label field to update
@@ -562,9 +563,12 @@ class PlaneClient:
         """
         # Get valid fields from Project class
         valid_fields = Label.__annotations__.keys()
+        filtered_data = {
+            'name': name
+        }
         
         # Filter out any invalid fields from kwargs
-        filtered_data = {k: v for k, v in kwargs.items() if k in valid_fields}
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
         
         if not filtered_data:
             raise ValueError("No valid fields provided for update")
@@ -1000,11 +1004,12 @@ class PlaneClient:
             logging.error(f"Error creating Issue: {e}")
             raise PlaneError("Error creating issue")
         
-    async def update_issue(self, project_id: str, issue_id: str, **kwargs) -> Issue:
+    async def update_issue(self, name: str, project_id: str, issue_id: str, **kwargs) -> Issue:
         """
         Update an issue with provided fields.
 
         Args:
+            name: Name of the issue (Required)
             project_id (str): The ID of the project to update (Required)
             issue_id (str): The ID of the issue to update (Required)
             **kwargs: Any valid Issue field to update
@@ -1017,9 +1022,12 @@ class PlaneClient:
         """
         # Get valid fields from Project class
         valid_fields = Issue.__annotations__.keys()
+        filtered_data = {
+            'name': name
+        }
         
         # Filter out any invalid fields from kwargs
-        filtered_data = {k: v for k, v in kwargs.items() if k in valid_fields}
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
         
         if not filtered_data:
             raise ValueError("No valid fields provided for update")
@@ -1140,6 +1148,50 @@ class PlaneClient:
             logging.error(f"Error getting issue activities: {e}")
             raise PlaneError("Error fetching issue activities")
         
+    async def get_activity_details(self, project_id: str, issue_id: str, activity_id: str) -> IssueActivity:
+        """
+        Fetch specific activity details for an issue.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+            issue_id (str): ID of the issue (Required)
+            activity_id (str): ID of the activity to fetch (Required)
+            
+        Returns:
+            IssueActivity: IssueActivity object if found
+        """
+        try:
+            activity_data = await self._request(
+                "GET", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/activities/{activity_id}"
+            )
+            
+            if not isinstance(activity_data, dict):
+                raise ValueError(f"Unexpected response format: {type(activity_data)}")
+            return IssueActivity(
+                id=activity_data.get('id', ''),
+                created_at=activity_data.get('created_at', ''),
+                updated_at=activity_data.get('updated_at', ''),
+                verb=activity_data.get('verb', ''),
+                field=activity_data.get('field'),
+                old_value=activity_data.get('old_value'),
+                new_value=activity_data.get('new_value'),
+                comment=activity_data.get('comment', ''),
+                attachments=activity_data.get('attachments', []),
+                old_identifier=activity_data.get('old_identifier'),
+                new_identifier=activity_data.get('new_identifier'),
+                epoch=float(activity_data.get('epoch', 0.0)),
+                project=activity_data.get('project', ''),
+                workspace=activity_data.get('workspace', ''),
+                issue=activity_data.get('issue', ''),
+                issue_comment=activity_data.get('issue_comment'),
+                actor=activity_data.get('actor', '')
+            )
+            
+        except Exception as e:
+            logging.error(f"Error getting activity details: {e}")
+            raise PlaneError("Error fetching activity details")
+        
     async def get_issue_comments(self, project_id: str, issue_id: str) -> list[IssueComment]:
         """
         Fetch all comments for an issue.
@@ -1189,3 +1241,419 @@ class PlaneClient:
         except Exception as e:
             logging.error(f"Error getting issue comments: {e}")
             raise PlaneError("Error fetching issue comments")
+        
+    async def get_comment_details(self, project_id: str, issue_id: str, comment_id: str) -> IssueComment:
+        """
+        Fetch specific comment details for an issue.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+            issue_id (str): ID of the issue (Required)
+            comment_id (str): ID of the comment to fetch (Required)
+            
+        Returns:
+            IssueComment: IssueComment object if found
+        """
+        try:
+            comment_data = await self._request(
+                "GET", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/comments/{comment_id}"
+            )
+            
+            if not isinstance(comment_data, dict):
+                raise ValueError(f"Unexpected response format: {type(comment_data)}")
+            return IssueComment(
+                id=comment_data.get('id', ''),
+                created_at=comment_data.get('created_at', ''),
+                updated_at=comment_data.get('updated_at', ''),
+                comment_stripped=comment_data.get('comment_stripped', ''),
+                comment_json=comment_data.get('comment_json', {}),
+                comment_html=comment_data.get('comment_html', ''),
+                attachments=comment_data.get('attachments', []),
+                access=comment_data.get('access', ''),
+                created_by=comment_data.get('created_by', ''),
+                updated_by=comment_data.get('updated_by', ''),
+                issue=comment_data.get('issue', ''),
+                project=comment_data.get('project', ''),
+                workspace=comment_data.get('workspace', ''),
+                actor=comment_data.get('actor', '')
+            )
+            
+        except Exception as e:
+            logging.error(f"Error getting comment details: {e}")
+            raise PlaneError("Error fetching comment details")
+
+    async def create_comment(self, comment_html: str, project_id: str, issue_id: str, **kwargs) -> IssueComment:
+        """
+        Create a new comment with provided data.
+
+        Args:
+            url (str): URL of the link (Required)
+            project_id (str): ID of the project (Required)
+            issue_id (str): ID of the issue (Required)
+            **kwargs: Any valid IssueComment field to update
+
+        Returns:
+            IssueComment: Created IssueComment object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        valid_fields = IssueComment.__annotations__.keys()
+        filtered_data = {
+            'comment_html': comment_html
+        }
+
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
+
+        try:
+            comment_data = await self._request(
+                "POST", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/comments/", 
+                json=filtered_data
+            )
+            
+            return IssueComment(
+                id=comment_data.get('id', ''),
+                created_at=comment_data.get('created_at', ''),
+                updated_at=comment_data.get('updated_at', ''),
+                comment_stripped=comment_data.get('comment_stripped', ''),
+                comment_json=comment_data.get('comment_json', {}),
+                comment_html=comment_data.get('comment_html', ''),
+                attachments=comment_data.get('attachments', []),
+                access=comment_data.get('access', ''),
+                created_by=comment_data.get('created_by', ''),
+                updated_by=comment_data.get('updated_by', ''),
+                issue=comment_data.get('issue', ''),
+                project=comment_data.get('project', ''),
+                workspace=comment_data.get('workspace', ''),
+                actor=comment_data.get('actor', '')
+            )
+
+        except Exception as e:
+            logging.error(f"Error creating Comment: {e}")
+            raise PlaneError("Error creating comment")
+        
+    async def update_comment(self, comment_html: str, project_id: str, issue_id: str, comment_id: str, **kwargs) -> IssueComment:
+        """
+        Update a comment with provided fields.
+
+        Args:
+            comment_html (str): HTML content of the comment (Required)
+            project_id (str): The ID of the project to update (Required)
+            issue_id (str): The ID of the issue (Required)
+            comment_id (str): The ID of the comment to update (Required)
+            **kwargs: Any valid IssueComment field to update
+
+        Returns:
+            IssueComment: Updated IssueComment object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        # Get valid fields from Project class
+        valid_fields = IssueComment.__annotations__.keys()
+        filtered_data = {
+            'comment_html': comment_html
+        }
+
+        
+        # Filter out any invalid fields from kwargs
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
+        
+        if not filtered_data:
+            raise ValueError("No valid fields provided for update")
+        
+        try:
+            comment_data = await self._request(
+                "PATCH", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/comments/{comment_id}/", 
+                json=filtered_data
+            )
+            
+            # Filter response data to only include valid fields
+            return IssueComment(
+                id=comment_data.get('id', ''),
+                created_at=comment_data.get('created_at', ''),
+                updated_at=comment_data.get('updated_at', ''),
+                comment_stripped=comment_data.get('comment_stripped', ''),
+                comment_json=comment_data.get('comment_json', {}),
+                comment_html=comment_data.get('comment_html', ''),
+                attachments=comment_data.get('attachments', []),
+                access=comment_data.get('access', ''),
+                created_by=comment_data.get('created_by', ''),
+                updated_by=comment_data.get('updated_by', ''),
+                issue=comment_data.get('issue', ''),
+                project=comment_data.get('project', ''),
+                workspace=comment_data.get('workspace', ''),
+                actor=comment_data.get('actor', '')
+            )
+
+            
+        except Exception as e:
+            logging.error(f"Error updating comment: {e}")
+            raise PlaneError("Error updating comment")
+        
+    async def delete_comment(self, project_id: str, issue_id: str, comment_id: str) -> bool:
+        """
+        Delete an existing comment.
+
+        Args:
+            project_id: The ID of the project containing the issue (Required)
+            issue_id: The ID of the issue containing the comment (Required)
+            comment_id: The ID of the comment to delete (Required)
+
+        Returns:
+            bool: True if comment was deleted successfully, False otherwise
+            
+        Raises:
+            PlaneError: If deletion fails
+        """
+        try:
+            await self._request(
+                "DELETE", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/comments/{comment_id}/"
+            )
+            return True
+
+        except Exception as e:
+            logging.error(f"Error deleting comment: {e}")
+            return False
+        
+    async def get_modules(self, project_id: str) -> list[Module]:
+        """
+        Fetch all modules for a project.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+
+        Returns:
+            list[Module]: List of Module objects
+        """
+        try:
+            response = await self._request("GET", f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/modules/")
+            
+            if isinstance(response, dict) and 'results' in response:
+                project_modules = response['results']
+            else:
+                raise ValueError(f"Unexpected response format: {type(response)}")
+            
+            modules = []
+            for module_data in project_modules:
+                try:
+                    module = Module(
+                        id=module_data.get('id', ''),
+                        created_at=module_data.get('created_at', ''),
+                        updated_at=module_data.get('updated_at', ''),
+                        name=module_data.get('name', ''),
+                        description=module_data.get('description', ''),
+                        description_text=module_data.get('description_text', ''),
+                        description_html=module_data.get('description_html', ''),
+                        start_date=module_data.get('start_date'),
+                        target_date=module_data.get('target_date'),
+                        status=module_data.get('status', ''),
+                        view_props=module_data.get('view_props', {}),
+                        sort_order=module_data.get('sort_order', 0.0),
+                        created_by=module_data.get('created_by', ''),
+                        updated_by=module_data.get('updated_by', ''),
+                        project=module_data.get('project', ''),
+                        workspace=module_data.get('workspace', ''),
+                        lead=module_data.get('lead', ''),
+                        members=module_data.get('members', [])
+                    )
+                    modules.append(module)
+                except TypeError as e:
+                    logging.error(f"Error creating module object: {e}")
+                    logging.debug(f"Module data: {module_data}")
+                    continue
+                    
+            return modules
+            
+        except Exception as e:
+            logging.error(f"Error getting Modules: {e}")
+            raise PlaneError("Error fetching project modules")
+        
+    async def get_module_details(self, project_id: str, module_id: str) -> Module:
+        """
+        Fetch specific module details for a project.
+        
+        Args:
+            project_id (str): ID of the project (Required)
+            module_id (str): ID of the module to fetch (Required)
+            
+        Returns:
+            Module: Module object if found
+        """
+        try:
+            module_data = await self._request(
+                "GET", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/modules/{module_id}"
+            )
+            
+            if not isinstance(module_data, dict):
+                raise ValueError(f"Unexpected response format: {type(module_data)}")
+
+            return Module(
+                id=module_data.get('id', ''),
+                created_at=module_data.get('created_at', ''),
+                updated_at=module_data.get('updated_at', ''),
+                name=module_data.get('name', ''),
+                description=module_data.get('description', ''),
+                description_text=module_data.get('description_text', ''),
+                description_html=module_data.get('description_html', ''),
+                start_date=module_data.get('start_date'),
+                target_date=module_data.get('target_date'),
+                status=module_data.get('status', ''),
+                view_props=module_data.get('view_props', {}),
+                sort_order=module_data.get('sort_order', 0.0),
+                created_by=module_data.get('created_by', ''),
+                updated_by=module_data.get('updated_by', ''),
+                project=module_data.get('project', ''),
+                workspace=module_data.get('workspace', ''),
+                lead=module_data.get('lead', ''),
+                members=module_data.get('members', [])
+            )
+            
+        except Exception as e:
+            logging.error(f"Error getting module details: {e}")
+            raise PlaneError("Error fetching module details")
+        
+    async def create_module(self, name: str, project_id: str, **kwargs) -> Module:
+        """
+        Create a new module with provided data.
+
+        Args:
+            name (str): Name of the module (Required)
+            project_id (str): ID of the project (Required)
+            **kwargs: Any valid Module field to update
+
+        Returns:
+            Module: Created Module object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        valid_fields = Module.__annotations__.keys()
+        filtered_data = {
+            'name': name
+        }
+
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
+
+        try:
+            module_data = await self._request(
+                "POST", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/modules/", 
+                json=filtered_data
+            )
+            
+            return Module(
+                id=module_data.get('id', ''),
+                created_at=module_data.get('created_at', ''),
+                updated_at=module_data.get('updated_at', ''),
+                name=module_data.get('name', ''),
+                description=module_data.get('description', ''),
+                description_text=module_data.get('description_text', ''),
+                description_html=module_data.get('description_html', ''),
+                start_date=module_data.get('start_date'),
+                target_date=module_data.get('target_date'),
+                status=module_data.get('status', ''),
+                view_props=module_data.get('view_props', {}),
+                sort_order=module_data.get('sort_order', 0.0),
+                created_by=module_data.get('created_by', ''),
+                updated_by=module_data.get('updated_by', ''),
+                project=module_data.get('project', ''),
+                workspace=module_data.get('workspace', ''),
+                lead=module_data.get('lead', ''),
+                members=module_data.get('members', [])
+            )
+
+        except Exception as e:
+            logging.error(f"Error creating Module: {e}")
+            raise PlaneError("Error creating module")
+        
+    async def update_module(self, name: str, project_id: str, module_id: str, **kwargs) -> Module:
+        """
+        Update a module with provided fields.
+
+        Args:
+            name: Name of the module (Required)
+            project_id (str): The ID of the project to update (Required)
+            module_id (str): The ID of the module to update (Required)
+            **kwargs: Any valid Module field to update
+
+        Returns:
+            Module: Updated Module object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        # Get valid fields from Project class
+        valid_fields = Module.__annotations__.keys()
+        filtered_data = {
+            'name': name
+        }
+        
+        # Filter out any invalid fields from kwargs
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
+        
+        if not filtered_data:
+            raise ValueError("No valid fields provided for update")
+        
+        try:
+            module_data = await self._request(
+                "PATCH", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/modules/{module_id}/", 
+                json=filtered_data
+            )
+            
+            # Filter response data to only include valid fields
+            return Module(
+                id=module_data.get('id', ''),
+                created_at=module_data.get('created_at', ''),
+                updated_at=module_data.get('updated_at', ''),
+                name=module_data.get('name', ''),
+                description=module_data.get('description', ''),
+                description_text=module_data.get('description_text', ''),
+                description_html=module_data.get('description_html', ''),
+                start_date=module_data.get('start_date'),
+                target_date=module_data.get('target_date'),
+                status=module_data.get('status', ''),
+                view_props=module_data.get('view_props', {}),
+                sort_order=module_data.get('sort_order', 0.0),
+                created_by=module_data.get('created_by', ''),
+                updated_by=module_data.get('updated_by', ''),
+                project=module_data.get('project', ''),
+                workspace=module_data.get('workspace', ''),
+                lead=module_data.get('lead', ''),
+                members=module_data.get('members', [])
+            )
+            
+        except Exception as e:
+            logging.error(f"Error updating module: {e}")
+            raise PlaneError("Error updating module")
+        
+    async def delete_module(self, project_id: str, module_id: str) -> bool:
+        """
+        Delete an existing module.
+
+        Args:
+            project_id: The ID of the project containing the issue (Required)
+            module_id: The ID of the module to be deleted (Required)
+
+        Returns:
+            bool: True if module was deleted successfully, False otherwise
+            
+        Raises:
+            PlaneError: If deletion fails
+        """
+        try:
+            await self._request(
+                "DELETE", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/modules/{module_id}/"
+            )
+            return True
+
+        except Exception as e:
+            logging.error(f"Error deleting module: {e}")
+            return False

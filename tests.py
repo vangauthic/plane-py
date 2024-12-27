@@ -4,11 +4,11 @@ from plane_py import PlaneClient
 async def main():
     client = PlaneClient(api_token="plane_api_575cb3353c4842b5bdd3cc9b50446767", workspace_slug="plane-py")
     try:
-        issue_comments = await client.get_issue_comments(
+        deleted_module = await client.delete_module(
             project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
-            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
+            module_id="83c29ebc-4f96-45da-8982-8f0f7c36fba9"
         )
-        print(issue_comments[0].comment_stripped)
+        print(deleted_module)
     except Exception as e:
         print("Error:", e)
 
