@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List, Union, Dict, Optional, Any
 
 # Import actual types for runtime
-from ._types import Project, State, Label, Link
+from ._types import Project, State, Label, Link, Issue, IssueActivity
 from .api import PlaneClient as _BaseClient
 
 # Create unified type exports
-PlaneType = Union[Project, State, Label, Link]
+PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity]
 
 class PlaneClient(_BaseClient):
     """
@@ -39,6 +39,17 @@ class PlaneClient(_BaseClient):
         async def create_link(self, url: str, project_id: str, issue_id: str, **kwargs) -> Link: ...
         async def update_link(self, project_id: str, issue_id: str, link_id: str, **kwargs) -> Link: ...
         async def delete_link(self, project_id: str, issue_id: str, link_id: str) -> bool: ...
+
+        # Issue methods
+        async def get_issues(self, project_id: str) -> List[Issue]: ...
+        async def get_issue_details(self, project_id: str, issue_id: str) -> Issue: ...
+        async def create_issue(self, name: str, project_id: str, **kwargs) -> Issue: ...
+        async def update_issue(self, project_id: str, issue_id: str, **kwargs) -> Issue: ...
+        async def delete_issue(self, project_id: str, issue_id: str) -> bool: ...
+
+        # IssueActivity methods
+        async def get_issue_activity(self, project_id: str, issue_id: str) -> List[IssueActivity]: ...
+        async def get_activity_details(self, project_id: str, issue_id: str, activity_id: str) -> IssueActivity: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -50,5 +61,7 @@ __all__ = [
     "State",
     "Label",
     "Link",
+    "Issue",
+    "IssueActivity",
     "PlaneType"
 ]

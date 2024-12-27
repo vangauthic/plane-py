@@ -235,3 +235,137 @@ class Link:
     project: str
     workspace: str
     issue: str
+
+@dataclass
+class Issue:
+    """
+    Represents a Plane issue.
+    
+    :param id: UUID of the issue
+    :type id: str
+    :param created_at: Timestamp of when the issue was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the issue was last updated
+    :type updated_at: str
+    :param estimate_point: Story points/estimate for the issue
+    :type estimate_point: Optional[float]
+    :param name: Name/title of the issue
+    :type name: str
+    :param description_html: Description in HTML format
+    :type description_html: str
+    :param description_stripped: Plain text description
+    :type description_stripped: str
+    :param priority: Priority level of the issue
+    :type priority: str
+    :param start_date: Start date of the issue
+    :type start_date: Optional[str]
+    :param target_date: Due date of the issue
+    :type target_date: Optional[str]
+    :param sequence_id: Sequential identifier of the issue
+    :type sequence_id: int
+    :param sort_order: Sorting order of the issue
+    :type sort_order: float
+    :param completed_at: Timestamp when the issue was completed
+    :type completed_at: Optional[str]
+    :param archived_at: Timestamp when the issue was archived
+    :type archived_at: Optional[str]
+    :param is_draft: Whether the issue is in draft state
+    :type is_draft: bool
+    :param created_by: UUID of the user who created the issue
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the issue
+    :type updated_by: str
+    :param project: UUID of the project this issue belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this issue belongs to
+    :type workspace: str
+    :param parent: UUID of the parent issue if any
+    :type parent: Optional[str]
+    :param state: UUID of the state this issue is in
+    :type state: str
+    :param assignees: List of UUIDs of users assigned to this issue
+    :type assignees: list[str]
+    :param labels: List of UUIDs of labels attached to this issue
+    :type labels: list[str]
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    estimate_point: Optional[float]
+    name: str
+    description_html: str
+    description_stripped: str
+    priority: str
+    start_date: Optional[str]
+    target_date: Optional[str]
+    sequence_id: int
+    sort_order: float
+    completed_at: Optional[str]
+    archived_at: Optional[str]
+    is_draft: bool
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    parent: Optional[str]
+    state: str
+    assignees: list[str]
+    labels: list[str]
+
+@dataclass
+class IssueActivity:
+    """
+    Represents a Plane issue activity log.
+    
+    :param id: UUID of the activity
+    :type id: str
+    :param created_at: Timestamp of when the activity was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the activity was last updated
+    :type updated_at: str
+    :param verb: Action performed (e.g., "created", "updated", etc.)
+    :type verb: str
+    :param field: Field that was modified
+    :type field: Optional[str]
+    :param old_value: Previous value of the field
+    :type old_value: Optional[str]
+    :param new_value: New value of the field
+    :type new_value: Optional[str]
+    :param comment: Description of the activity
+    :type comment: str
+    :param attachments: List of attachments related to the activity
+    :type attachments: list
+    :param old_identifier: Previous identifier if changed
+    :type old_identifier: Optional[str]
+    :param new_identifier: New identifier if changed
+    :type new_identifier: Optional[str]
+    :param epoch: Unix timestamp of the activity
+    :type epoch: float
+    :param project: UUID of the project this activity belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this activity belongs to
+    :type workspace: str
+    :param issue: UUID of the issue this activity is related to
+    :type issue: str
+    :param issue_comment: UUID of the comment if this activity is comment-related
+    :type issue_comment: Optional[str]
+    :param actor: UUID of the user who performed the activity
+    :type actor: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    verb: str
+    field: Optional[str]
+    old_value: Optional[str]
+    new_value: Optional[str]
+    comment: str
+    attachments: list
+    old_identifier: Optional[str]
+    new_identifier: Optional[str]
+    epoch: float
+    project: str
+    workspace: str
+    issue: str
+    issue_comment: Optional[str]
+    actor: str

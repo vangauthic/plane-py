@@ -1,15 +1,15 @@
 import asyncio
 from plane_py import PlaneClient
-
+#sequence id = 3
 async def main():
     client = PlaneClient(api_token="plane_api_575cb3353c4842b5bdd3cc9b50446767", workspace_slug="plane-py")
     try:
-        deleted_link = await client.delete_link(
+        issue_activity = await client.get_activity_details(
             project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
-            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e",
-            link_id="357ecb87-1157-42f7-95cb-333837bfee44"
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            activity_id="68e46fde-023b-4c99-ab2d-b15f46a3588d"
         )
-        print(deleted_link)
+        print(issue_activity.created_at)
     except Exception as e:
         print("Error:", e)
 

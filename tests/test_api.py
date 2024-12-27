@@ -232,3 +232,81 @@ async def test_delete_link(client: PlaneClient):
         assert isinstance(deleted_link, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issues(client: PlaneClient):
+    try:
+        project_issues = await client.get_issues(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(project_issues, list[Issue])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issue_details(client: PlaneClient):
+    try:
+        project_issue = await client.get_issue_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e"
+        )
+        assert isinstance(project_issue, Issue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_issue(client: PlaneClient):
+    try:
+        new_issue = await client.create_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            name="New Issue"
+        )
+        assert isinstance(new_issue, Issue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_issue(client: PlaneClient):
+    try:
+        updated_issue = await client.create_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="cb8a79b9-fcd5-41dd-9826-4e3999bce1fb",
+            name="Updated Issue"
+        )
+        assert isinstance(updated_issue, Issue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_issue(client: PlaneClient):
+    try:
+        deleted_issue = await client.delete_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e"
+        )
+        assert isinstance(deleted_issue, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issue_activity(client: PlaneClient):
+    try:
+        issue_activities = await client.get_issue_activity(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
+        )
+        assert isinstance(issue_activities, list[IssueActivity])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_activity_details(client: PlaneClient):
+    try:
+        issue_activity = await client.get_activity_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
+            activity_id="68e46fde-023b-4c99-ab2d-b15f46a3588d"
+        )
+        assert isinstance(issue_activity, IssueActivity)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
