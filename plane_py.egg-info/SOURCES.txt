@@ -1,0 +1,15 @@
+LICENSE
+README.md
+pyproject.toml
+./plane_py/__init__.py
+./plane_py/_http_client.py
+./plane_py/_types.py
+./plane_py/_utils.py
+./plane_py/api.py
+./plane_py/errors.py
+plane_py.egg-info/PKG-INFO
+plane_py.egg-info/SOURCES.txt
+plane_py.egg-info/dependency_links.txt
+plane_py.egg-info/requires.txt
+plane_py.egg-info/top_level.txt
+tests/test_api.py

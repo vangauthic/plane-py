@@ -1,5 +1,9 @@
 import aiohttp
+import logging
 from ._types import *
+from errors import *
+
+logging.basicConfig(filename='plane-py.log', level=logging.INFO)
 
 class PlaneClient:
     def __init__(self, api_token: str, workspace_slug: str, base_url: str = "https://api.plane.so"):
@@ -17,6 +21,8 @@ class PlaneClient:
                 response.raise_for_status() # Will raise an error for bad responses
                 if response.status == 204:
                     return None
+                if response.status == 404:
+                    raise NotFoundError("Not found.")
                 return await response.json()
 
     async def get_projects(self) -> list[Project]:
@@ -45,14 +51,14 @@ class PlaneClient:
                 try:
                     projects.append(Project(**filtered_data))
                 except TypeError as e:
-                    print(f"Error creating Project: {e}")
-                    print(f"Data: {filtered_data}")
+                    logging.error(f"Error getting project: {e}")
+                    logging.info(f"Data: {filtered_data}")
                     continue
                     
             return projects
             
         except Exception as e:
-            print(f"Error fetching projects: {e}")
+            logging.log(msg=f"Error getting projects: {e}", level=1)
             return []
         
     async def get_project_details(self, project_id: str) -> Project:
@@ -80,8 +86,8 @@ class PlaneClient:
             return Project(**filtered_data)
             
         except Exception as e:
-            print(f"Error fetching project details: {e}")
-            raise
+            logging.error(f"Error fetching project details: {e}")
+            raise PlaneError("Error fetching project details")
 
     async def update_project(self, project_id: str, **kwargs) -> Project:
         """
@@ -119,8 +125,8 @@ class PlaneClient:
             return Project(**filtered_response)
             
         except Exception as e:
-            print(f"Error updating project: {e}")
-            raise
+            logging.error("Error updating project: {e}")
+            raise PlaneError("Error updating project")
 
     async def create_project(self, name: str, identifier: str, **kwargs) -> Project:
         """
@@ -157,8 +163,8 @@ class PlaneClient:
             return Project(**filtered_response)
 
         except Exception as e:
-            print(f"Error creating project: {e}")
-            raise
+            logging.error("Error creating Project: {e}")
+            raise PlaneError("Error creating project")
 
     async def delete_project(self, project_id: str) -> bool:
         """
@@ -182,7 +188,7 @@ class PlaneClient:
             return True
 
         except Exception as e:
-            print(f"Error deleting project: {e}")
+            logging.error("Error deleting project: {e}")
             return False
 
     async def get_tasks(self, project_id: str):

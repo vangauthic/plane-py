@@ -1,12 +1,29 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "plane-py"
 version = "0.1.0"
-description = "Plane Python Client"
-dependencies = []
+description = "An async Python client for the Plane API"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+dependencies = [
+    "aiohttp>=3.8.0"
+]
+authors = [
+    {name = "vangauthic", email = "heliumzeppelins@gmail.com"}
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.20.0"
+]
 
 [tool.setuptools]
+package-dir = {"" = "."}
 packages = ["plane_py"]
+
+[project.urls]
+Homepage = "https://github.com/vangauthic/plane-py/"
