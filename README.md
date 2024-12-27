@@ -47,6 +47,8 @@ asyncio.run(main())
   - Issue Links
   - Issue Activities
   - Issue Comments
+  - Modules
+  - Module Issues
 
 ## License
 
