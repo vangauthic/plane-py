@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List, Union, Dict, Optional, Any
 
 # Import actual types for runtime
-from ._types import Project, State, Label, Link, Issue, IssueActivity
+from ._types import Project, State, Label, Link, Issue, IssueActivity, IssueComment
 from .api import PlaneClient as _BaseClient
 
 # Create unified type exports
-PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity]
+PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity, IssueComment]
 
 class PlaneClient(_BaseClient):
     """
@@ -63,5 +63,6 @@ __all__ = [
     "Link",
     "Issue",
     "IssueActivity",
+    "IssueComment",
     "PlaneType"
 ]

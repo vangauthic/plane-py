@@ -369,3 +369,52 @@ class IssueActivity:
     issue: str
     issue_comment: Optional[str]
     actor: str
+
+@dataclass
+class IssueComment:
+    """
+    Represents a Plane issue comment.
+    
+    :param id: UUID of the comment
+    :type id: str
+    :param created_at: Timestamp of when the comment was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the comment was last updated
+    :type updated_at: str
+    :param comment_stripped: Plain text version of the comment
+    :type comment_stripped: str
+    :param comment_json: JSON representation of the comment structure
+    :type comment_json: dict
+    :param comment_html: HTML formatted version of the comment
+    :type comment_html: str
+    :param attachments: List of attachments related to the comment
+    :type attachments: list
+    :param access: Access level of the comment (e.g., "INTERNAL")
+    :type access: str
+    :param created_by: UUID of the user who created the comment
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the comment
+    :type updated_by: str
+    :param project: UUID of the project this comment belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this comment belongs to
+    :type workspace: str
+    :param issue: UUID of the issue this comment is associated with
+    :type issue: str
+    :param actor: UUID of the user who performed the comment action
+    :type actor: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    comment_stripped: str
+    comment_json: dict
+    comment_html: str
+    attachments: list
+    access: str
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    issue: str
+    actor: str

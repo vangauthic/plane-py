@@ -4,12 +4,11 @@ from plane_py import PlaneClient
 async def main():
     client = PlaneClient(api_token="plane_api_575cb3353c4842b5bdd3cc9b50446767", workspace_slug="plane-py")
     try:
-        issue_activity = await client.get_activity_details(
+        issue_comments = await client.get_issue_comments(
             project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
-            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e",
-            activity_id="68e46fde-023b-4c99-ab2d-b15f46a3588d"
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
         )
-        print(issue_activity.created_at)
+        print(issue_comments[0].comment_stripped)
     except Exception as e:
         print("Error:", e)
 

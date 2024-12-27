@@ -7,7 +7,7 @@ setup(
     install_requires=[
         "aiohttp>=3.8.0"
     ],
-    author="Your Name",
-    description="A Python client for the Plane API",
+    author="vangauthic",
+    description="Async Python wrapper for Plane.so API",
     python_requires=">=3.7",
 )

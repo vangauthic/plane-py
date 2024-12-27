@@ -310,3 +310,14 @@ async def test_get_activity_details(client: PlaneClient):
         assert isinstance(issue_activity, IssueActivity)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issue_comments(client: PlaneClient):
+    try:
+        issue_comments = await client.get_issue_comments(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
+        )
+        assert isinstance(issue_comments, list[IssueComment])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")

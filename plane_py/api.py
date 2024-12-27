@@ -1140,47 +1140,52 @@ class PlaneClient:
             logging.error(f"Error getting issue activities: {e}")
             raise PlaneError("Error fetching issue activities")
         
-    async def get_activity_details(self, project_id: str, issue_id: str, activity_id: str) -> IssueActivity:
+    async def get_issue_comments(self, project_id: str, issue_id: str) -> list[IssueComment]:
         """
-        Fetch specific activity details for an issue.
+        Fetch all comments for an issue.
         
         Args:
             project_id (str): ID of the project (Required)
             issue_id (str): ID of the issue (Required)
-            activity_id (str): ID of the activity to fetch (Required)
-            
+
         Returns:
-            IssueActivity: IssueActivity object if found
+            list[IssueComment]: List of IssueComment objects
         """
         try:
-            activity_data = await self._request(
-                "GET", 
-                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/activities/{activity_id}"
-            )
+            response = await self._request("GET", f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/issues/{issue_id}/comments/")
             
-            if not isinstance(activity_data, dict):
-                raise ValueError(f"Unexpected response format: {type(activity_data)}")
-
-            return IssueActivity(
-                id=activity_data.get('id', ''),
-                created_at=activity_data.get('created_at', ''),
-                updated_at=activity_data.get('updated_at', ''),
-                verb=activity_data.get('verb', ''),
-                field=activity_data.get('field'),
-                old_value=activity_data.get('old_value'),
-                new_value=activity_data.get('new_value'),
-                comment=activity_data.get('comment', ''),
-                attachments=activity_data.get('attachments', []),
-                old_identifier=activity_data.get('old_identifier'),
-                new_identifier=activity_data.get('new_identifier'),
-                epoch=float(activity_data.get('epoch', 0.0)),
-                project=activity_data.get('project', ''),
-                workspace=activity_data.get('workspace', ''),
-                issue=activity_data.get('issue', ''),
-                issue_comment=activity_data.get('issue_comment'),
-                actor=activity_data.get('actor', '')
-            )
+            if isinstance(response, dict) and 'results' in response:
+                issue_comments = response['results']
+            else:
+                raise ValueError(f"Unexpected response format: {type(response)}")
+            
+            comments = []
+            for comment_data in issue_comments:
+                try:
+                    comment = IssueComment(
+                        id=comment_data.get('id', ''),
+                        created_at=comment_data.get('created_at', ''),
+                        updated_at=comment_data.get('updated_at', ''),
+                        comment_stripped=comment_data.get('comment_stripped', ''),
+                        comment_json=comment_data.get('comment_json', {}),
+                        comment_html=comment_data.get('comment_html', ''),
+                        attachments=comment_data.get('attachments', []),
+                        access=comment_data.get('access', ''),
+                        created_by=comment_data.get('created_by', ''),
+                        updated_by=comment_data.get('updated_by', ''),
+                        issue=comment_data.get('issue', ''),
+                        project=comment_data.get('project', ''),
+                        workspace=comment_data.get('workspace', ''),
+                        actor=comment_data.get('actor', '')
+                    )
+                    comments.append(comment)
+                except TypeError as e:
+                    logging.error(f"Error creating comment object: {e}")
+                    logging.debug(f"Comment data: {comment_data}")
+                    continue
+                    
+            return comments
             
         except Exception as e:
-            logging.error(f"Error getting activity details: {e}")
-            raise PlaneError("Error fetching activity details")
+            logging.error(f"Error getting issue comments: {e}")
+            raise PlaneError("Error fetching issue comments")
