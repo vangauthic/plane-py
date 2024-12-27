@@ -115,3 +115,60 @@ async def test_delete_state(client: PlaneClient):
         assert isinstance(deleted_state, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_labels(client: PlaneClient):
+    try:
+        project_labels = await client.get_labels(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(project_labels, list[Label])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_label_details(client: PlaneClient):
+    try:
+        project_label = await client.get_label_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            label_id="02c01a1e-89ba-4016-a206-6f01826a9dfd"
+        )
+        assert isinstance(project_label, Label)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_label(client: PlaneClient):
+    try:
+        new_label = await client.create_label(
+            name="New Label",
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            color="FFFFFF"
+        )
+        assert isinstance(new_label, Label)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_label(client: PlaneClient):
+    try:
+        updated_label = await client.update_label(
+            name="Updated Label",
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            label_id="a29dab20-c4d2-4263-b3d6-451935d714b2",
+            color="FFFF00"
+        )
+        assert isinstance(updated_label, Label)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_label(client: PlaneClient):
+    try:
+        deleted_label = await client.delete_label(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            label_id="a29dab20-c4d2-4263-b3d6-451935d714b2",
+        )
+        assert isinstance(deleted_label, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")

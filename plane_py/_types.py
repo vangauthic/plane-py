@@ -1,4 +1,4 @@
-from typing import TypedDict
+from typing import Optional
 from dataclasses import dataclass
 
 @dataclass
@@ -152,3 +152,46 @@ class Project:
     updated_at: str
     updated_by: str
     workspace: str
+
+@dataclass
+class Label:
+    """
+    Represents a Plane label.
+    
+    :param id: UUID of the label
+    :type id: str
+    :param created_at: Timestamp of when the label was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the label was last updated
+    :type updated_at: str
+    :param name: Name of the label
+    :type name: str
+    :param description: Description of the label
+    :type description: str
+    :param color: Color code for the label
+    :type color: str
+    :param sort_order: Sorting order of the label
+    :type sort_order: float
+    :param created_by: UUID of the user who created the label
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the label
+    :type updated_by: str
+    :param project: UUID of the project this label belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this label belongs to
+    :type workspace: str
+    :param parent: UUID of the parent label if any
+    :type parent: Optional[str]
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+    color: str
+    sort_order: float
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    parent: Optional[str] = None
