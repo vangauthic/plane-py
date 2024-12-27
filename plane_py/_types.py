@@ -1,12 +1,6 @@
 from typing import TypedDict
 from dataclasses import dataclass
 
-class Task(TypedDict):
-    id: str
-    title: str
-    description: str
-    status: str
-
 @dataclass
 class State:
     """

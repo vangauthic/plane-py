@@ -2,6 +2,7 @@ Metadata-Version: 2.1
 Name: plane-py
 Version: 0.1.0
 Summary: An async Python client for the Plane API
+Author: Your Name
 Author-email: vangauthic <heliumzeppelins@gmail.com>
 License: MIT
 Project-URL: Homepage, https://github.com/vangauthic/plane-py/

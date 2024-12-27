@@ -173,9 +173,6 @@ class PlaneClient:
 
         Returns:
             bool: True if project was deleted successfully, False otherwise
-
-        Raises:
-            ValueError: If response format is unexpected
         """
 
         try:
@@ -283,11 +280,133 @@ class PlaneClient:
         except Exception as e:
             logging.error(f"Error getting state details: {e}")
             raise PlaneError("Error fetching state details")
+        
+    async def create_state(self, name: str, color: str, project_id: str, **kwargs) -> State:
+        """
+        Create a new state with provided data.
 
-    async def get_tasks(self, project_id: str):
-        """Fetch tasks for a specific project."""
-        return await self._request("GET", f"/projects/{project_id}/tasks")
+        Args:
+            name (str): Name of the state (Required)
+            color (str): Color of the state (Required)
+            project_id (str): ID of the project (Required)
+            **kwargs: Any valid State field to update
 
-    async def create_task(self, project_id: str, data: dict):
-        """Create a new task."""
-        return await self._request("POST", f"/projects/{project_id}/tasks", json=data)
+        Returns:
+            State: Created State object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        valid_fields = State.__annotations__.keys()
+        filtered_data = {
+            'name': name,
+            'color': color
+        }
+
+        filtered_data.update({k: v for k, v in kwargs.items() if k in valid_fields})
+
+        try:
+            state_data = await self._request(
+                "POST", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/states/", 
+                json=filtered_data
+            )
+            
+            return State(
+                id=state_data.get('id', ''),
+                created_at=state_data.get('created_at', ''),
+                updated_at=state_data.get('updated_at', ''),
+                name=state_data.get('name', ''),
+                description=state_data.get('description', ''),
+                color=state_data.get('color', ''),
+                workspace_slug=self.workspace_slug,  # Use client's workspace_slug
+                sequence=str(state_data.get('sequence', '')),
+                group=state_data.get('group', ''),
+                default=state_data.get('default', False),
+                created_by=state_data.get('created_by', ''),
+                updated_by=state_data.get('updated_by', ''),
+                project=state_data.get('project', ''),
+                workspace=state_data.get('workspace', '')
+            )
+
+        except Exception as e:
+            logging.error(f"Error creating State: {e}")
+            raise PlaneError("Error creating state")
+        
+    async def update_state(self, project_id: str, state_id: str, **kwargs) -> State:
+        """
+        Update a state with provided fields.
+
+        Args:
+            project_id (str): The ID of the project to update (Required)
+            state_id (str): The ID of the state to update (Required)
+            **kwargs: Any valid State field to update
+
+        Returns:
+            State: Updated State object
+
+        Raises:
+            ValueError: If response format is unexpected
+        """
+        # Get valid fields from Project class
+        valid_fields = State.__annotations__.keys()
+        
+        # Filter out any invalid fields from kwargs
+        filtered_data = {k: v for k, v in kwargs.items() if k in valid_fields}
+        
+        if not filtered_data:
+            raise ValueError("No valid fields provided for update")
+        
+        try:
+            state_data = await self._request(
+                "PATCH", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/states/{state_id}/", 
+                json=filtered_data
+            )
+            
+            # Filter response data to only include valid fields
+            return State(
+                id=state_data.get('id', ''),
+                created_at=state_data.get('created_at', ''),
+                updated_at=state_data.get('updated_at', ''),
+                name=state_data.get('name', ''),
+                description=state_data.get('description', ''),
+                color=state_data.get('color', ''),
+                workspace_slug=self.workspace_slug,  # Use client's workspace_slug
+                sequence=str(state_data.get('sequence', '')),
+                group=state_data.get('group', ''),
+                default=state_data.get('default', False),
+                created_by=state_data.get('created_by', ''),
+                updated_by=state_data.get('updated_by', ''),
+                project=state_data.get('project', ''),
+                workspace=state_data.get('workspace', '')
+            )
+            
+        except Exception as e:
+            logging.error(f"Error updating state: {e}")
+            raise PlaneError("Error updating state")
+        
+    async def delete_state(self, project_id: str, state_id: str) -> bool:
+        """
+        Delete an existing state.
+
+        Args:
+            project_id: The ID of the project containing the state (Required)
+            state_id: The ID of the state to delete (Required)
+
+        Returns:
+            bool: True if state was deleted successfully, False otherwise
+            
+        Raises:
+            PlaneError: If deletion fails
+        """
+        try:
+            await self._request(
+                "DELETE", 
+                f"/api/v1/workspaces/{self.workspace_slug}/projects/{project_id}/states/{state_id}/"
+            )
+            return True
+
+        except Exception as e:
+            logging.error(f"Error deleting state: {e}")
+            return False
