@@ -2,5 +2,5 @@
 __pycache__
 build
 dist
-plane-py.egg-info/
+plane_py.egg-info/
 DEV-README.md
