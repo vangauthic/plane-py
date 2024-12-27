@@ -195,3 +195,43 @@ class Label:
     project: str
     workspace: str
     parent: Optional[str] = None
+
+@dataclass
+class Link:
+    """
+    Represents a Plane link.
+    
+    :param id: UUID of the link
+    :type id: str
+    :param created_at: Timestamp of when the link was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the link was last updated
+    :type updated_at: str
+    :param title: Title of the link
+    :type title: str
+    :param url: URL of the link
+    :type url: str
+    :param metadata: Additional metadata for the link
+    :type metadata: dict
+    :param created_by: UUID of the user who created the link
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the link
+    :type updated_by: str
+    :param project: UUID of the project this link belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this link belongs to
+    :type workspace: str
+    :param issue: UUID of the issue this link is associated with
+    :type issue: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    title: str
+    url: str
+    metadata: dict
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    issue: str

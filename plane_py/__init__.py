@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List, Union, Dict, Optional, Any
 
 # Import actual types for runtime
-from ._types import Project, State, Label
+from ._types import Project, State, Label, Link
 from .api import PlaneClient as _BaseClient
 
 # Create unified type exports
-PlaneType = Union[Project, State, Label]
+PlaneType = Union[Project, State, Label, Link]
 
 class PlaneClient(_BaseClient):
     """
@@ -32,6 +32,13 @@ class PlaneClient(_BaseClient):
         async def create_label(self, name: str, project_id: str, **kwargs) -> Label: ...
         async def update_label(self, project_id: str, label_id: str, **kwargs) -> Label: ...
         async def delete_label(self, project_id: str, label_id: str) -> bool: ...
+
+        # Link methods
+        async def get_links(self, project_id: str, issue_id: str) -> List[Link]: ...
+        async def get_link_details(self, project_id: str, issue_id: str, link_id: str) -> Link: ...
+        async def create_link(self, url: str, project_id: str, issue_id: str, **kwargs) -> Link: ...
+        async def update_link(self, project_id: str, issue_id: str, link_id: str, **kwargs) -> Link: ...
+        async def delete_link(self, project_id: str, issue_id: str, link_id: str) -> bool: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -42,5 +49,6 @@ __all__ = [
     "Project",
     "State",
     "Label",
+    "Link",
     "PlaneType"
 ]

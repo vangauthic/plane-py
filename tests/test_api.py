@@ -172,3 +172,63 @@ async def test_delete_label(client: PlaneClient):
         assert isinstance(deleted_label, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_links(client: PlaneClient):
+    try:
+        issue_links = await client.get_links(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e"
+        )
+        assert isinstance(issue_links, list[Link])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_link_details(client: PlaneClient):
+    try:
+        link_details = await client.get_link_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e",
+            link_id="8cf365ce-d3c6-4876-b177-6b755737dace"
+        )
+        assert isinstance(link_details, Link)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_link(client: PlaneClient):
+    try:
+        new_link = await client.create_link(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e",
+            url="https://example.com"
+        )
+        assert isinstance(new_link, Link)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_link(client: PlaneClient):
+    try:
+        updated_link = await client.update_link(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e",
+            link_id="357ecb87-1157-42f7-95cb-333837bfee44",
+            url="https://example2.com"
+        )
+        assert isinstance(updated_link, Link)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_link(client: PlaneClient):
+    try:
+        deleted_link = await client.delete_link(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="d4d6a6c4-7a1a-4ffe-8cd8-1135d2fb4f2e",
+            link_id="357ecb87-1157-42f7-95cb-333837bfee44"
+        )
+        assert isinstance(deleted_link, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
