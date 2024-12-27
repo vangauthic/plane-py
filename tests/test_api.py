@@ -425,3 +425,38 @@ async def test_delete_module(client: PlaneClient):
         assert isinstance(deleted_module, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_module_issues(client: PlaneClient):
+    try:
+        module_issues = await client.get_module_issues(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="81522e51-d598-4b41-85f8-dd4d562a91a0"
+        )
+        assert isinstance(module_issues, list[ModuleIssue])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_module_issue(client: PlaneClient):
+    try:
+        new_module_issue = await client.create_module_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="81522e51-d598-4b41-85f8-dd4d562a91a0",
+            issues=["dfa4c511-234e-48c6-83eb-5fda38fc108e"]
+        )
+        assert isinstance(new_module_issue, ModuleIssue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_module_issue(client: PlaneClient):
+    try:
+        deleted_module_issue = await client.delete_module_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            module_id="81522e51-d598-4b41-85f8-dd4d562a91a0",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
+        )
+        assert isinstance(deleted_module_issue, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")

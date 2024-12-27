@@ -4,11 +4,12 @@ from plane_py import PlaneClient
 async def main():
     client = PlaneClient(api_token="plane_api_575cb3353c4842b5bdd3cc9b50446767", workspace_slug="plane-py")
     try:
-        deleted_module = await client.delete_module(
+        deleted_module_issue = await client.delete_module_issue(
             project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
-            module_id="83c29ebc-4f96-45da-8982-8f0f7c36fba9"
+            module_id="81522e51-d598-4b41-85f8-dd4d562a91a0",
+            issue_id="dfa4c511-234e-48c6-83eb-5fda38fc108e"
         )
-        print(deleted_module)
+        print(deleted_module_issue)
     except Exception as e:
         print("Error:", e)
 

@@ -479,3 +479,40 @@ class Module:
     workspace: str
     lead: Optional[str]
     members: list[str]
+
+@dataclass
+class ModuleIssue:
+    """
+    Represents a Plane module issue.
+    
+    :param id: UUID of the module issue
+    :type id: str
+    :param sub_issues_count: Count of sub-issues
+    :type sub_issues_count: int
+    :param created_at: Timestamp of when the module issue was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the module issue was last updated
+    :type updated_at: str
+    :param created_by: UUID of the user who created the module issue
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the module issue
+    :type updated_by: str
+    :param project: UUID of the project this module issue belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this module issue belongs to
+    :type workspace: str
+    :param module: UUID of the module this issue belongs to
+    :type module: str
+    :param issue: UUID of the issue
+    :type issue: str
+    """
+    id: str
+    sub_issues_count: int
+    created_at: str
+    updated_at: str
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    module: str
+    issue: str

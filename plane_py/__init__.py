@@ -1,11 +1,11 @@
 from typing import TYPE_CHECKING, List, Union, Dict, Optional, Any
 
 # Import actual types for runtime
-from ._types import Project, State, Label, Link, Issue, IssueActivity, IssueComment, Module
+from ._types import *
 from .api import PlaneClient as _BaseClient
 
 # Create unified type exports
-PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity, IssueComment, Module]
+PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity, IssueComment, Module, ModuleIssue]
 
 class PlaneClient(_BaseClient):
     """
@@ -64,6 +64,11 @@ class PlaneClient(_BaseClient):
         async def create_module(self, name: str, project_id: str, **kwargs) -> Module: ...
         async def update_module(self, name: str, project_id: str, module_id: str, **kwargs) -> Module: ...
         async def delete_module(self, project_id: str, module_id: str) -> bool: ...
+
+        # ModuleIssue methods
+        async def get_module_issues(self, project_id: str, module_id: str) -> List[ModuleIssue]: ...
+        async def create_module_issue(self, issues: list[str], project_id: str, module_id: str, **kwargs) -> ModuleIssue: ...
+        async def delete_module_issue(self, project_id: str, module_id: str, issue_id: str) -> bool: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -79,5 +84,6 @@ __all__ = [
     "IssueActivity",
     "IssueComment",
     "Module",
+    "ModuleIssue",
     "PlaneType"
 ]
