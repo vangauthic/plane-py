@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "plane-py"
-version = "0.1.0"
+version = "0.6.0"
 description = "An async Python client for the Plane API"
 requires-python = ">=3.7"
 license = {text = "MIT"}
@@ -12,7 +12,7 @@ dependencies = [
     "aiohttp>=3.8.0"
 ]
 authors = [
-    {name = "vangauthic", email = "heliumzeppelins@gmail.com"}
+    {name = "Andrew Petty", email = "andrewtpetty03@gmail.com"}
 ]
 
 [project.optional-dependencies]
