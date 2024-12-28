@@ -5,7 +5,19 @@ from ._types import *
 from .api import PlaneClient as _BaseClient
 
 # Create unified type exports
-PlaneType = Union[Project, State, Label, Link, Issue, IssueActivity, IssueComment, Module, ModuleIssue, Cycle]
+PlaneType = Union[
+    Project,
+    State,
+    Label,
+    Link,
+    Issue,
+    IssueActivity,
+    IssueComment,
+    Module,
+    ModuleIssue,
+    Cycle,
+    CycleIssue
+]
 
 class PlaneClient(_BaseClient):
     """
@@ -76,6 +88,11 @@ class PlaneClient(_BaseClient):
         async def create_cycle(self, name: str, project_id: str, **kwargs) -> Cycle: ...
         async def update_cycle(self, name: str, project_id: str, cycle_id: str, **kwargs) -> Cycle: ...
         async def delete_cycle(self, project_id: str, cycle_id: str) -> bool: ...
+
+        # CycleIssue methods
+        async def get_cycle_issues(self, project_id: str, cycle_id: str) -> List[CycleIssue]: ...
+        async def create_cycle_issue(self, issues: list[str], project_id: str, cycle_id: str, **kwargs) -> CycleIssue: ...
+        async def delete_cycle_issue(self, project_id: str, cycle_id: str, issue_id: str) -> bool: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -93,5 +110,6 @@ __all__ = [
     "Module",
     "ModuleIssue",
     "Cycle",
+    "CycleIssue",
     "PlaneType"
 ]

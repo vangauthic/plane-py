@@ -565,3 +565,40 @@ class Cycle:
     project: str
     workspace: str
     owned_by: str
+
+@dataclass
+class CycleIssue:
+    """
+    Represents a Plane cycle issue.
+    
+    :param id: UUID of the cycle issue
+    :type id: str
+    :param sub_issues_count: Count of sub-issues
+    :type sub_issues_count: int
+    :param created_at: Timestamp of when the cycle issue was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the cycle issue was last updated
+    :type updated_at: str
+    :param created_by: UUID of the user who created the cycle issue
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the cycle issue
+    :type updated_by: str
+    :param project: UUID of the project this cycle issue belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this cycle issue belongs to
+    :type workspace: str
+    :param cycle: UUID of the cycle this issue belongs to
+    :type cycle: str
+    :param issue: UUID of the issue
+    :type issue: str
+    """
+    id: str
+    sub_issues_count: int
+    created_at: str
+    updated_at: str
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    cycle: str
+    issue: str

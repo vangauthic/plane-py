@@ -515,3 +515,38 @@ async def test_delete_cycle(client: PlaneClient):
         assert isinstance(deleted_cycle, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_cycle_issues(client: PlaneClient):
+    try:
+        cycle_issues = await client.get_cycle_issues(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="872f4637-b77d-4ab3-9427-a36cc3cd387a"
+        )
+        assert isinstance(cycle_issues, list[CycleIssue])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_cycle_issue(client: PlaneClient):
+    try:
+        new_cycle_issue = await client.create_cycle_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="872f4637-b77d-4ab3-9427-a36cc3cd387a",
+            issues=["815c4689-7525-46d3-a19d-d2f58bcfadbf", "dfa4c511-234e-48c6-83eb-5fda38fc108e"]
+        )
+        assert isinstance(new_cycle_issue, CycleIssue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_cycle_issue(client: PlaneClient):
+    try:
+        deleted_cycle_issue = await client.delete_cycle_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="872f4637-b77d-4ab3-9427-a36cc3cd387a",
+            issue_id="815c4689-7525-46d3-a19d-d2f58bcfadbf"
+        )
+        assert isinstance(deleted_cycle_issue, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
