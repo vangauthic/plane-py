@@ -516,3 +516,52 @@ class ModuleIssue:
     workspace: str
     module: str
     issue: str
+
+@dataclass
+class Cycle:
+    """
+    Represents a Plane cycle.
+    
+    :param id: UUID of the cycle
+    :type id: str
+    :param created_at: Timestamp of when the cycle was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the cycle was last updated
+    :type updated_at: str
+    :param name: Name of the cycle
+    :type name: str
+    :param description: Description of the cycle
+    :type description: str
+    :param start_date: Start date of the cycle
+    :type start_date: Optional[str]
+    :param end_date: End date of the cycle
+    :type end_date: Optional[str]
+    :param view_props: View properties of the cycle
+    :type view_props: dict
+    :param sort_order: Sorting order of the cycle
+    :type sort_order: float
+    :param created_by: UUID of the user who created the cycle
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the cycle
+    :type updated_by: str
+    :param project: UUID of the project this cycle belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this cycle belongs to
+    :type workspace: str
+    :param owned_by: UUID of the user who owns the cycle
+    :type owned_by: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+    start_date: Optional[str]
+    end_date: Optional[str]
+    view_props: dict
+    sort_order: float
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str
+    owned_by: str

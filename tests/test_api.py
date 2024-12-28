@@ -460,3 +460,58 @@ async def test_delete_module_issue(client: PlaneClient):
         assert isinstance(deleted_module_issue, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_cycles(client: PlaneClient):
+    try:
+        project_cycles = await client.get_cycles(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(project_cycles, list[Cycle])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_cycle_details(client: PlaneClient):
+    try:
+        project_cycle = await client.get_cycle_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="872f4637-b77d-4ab3-9427-a36cc3cd387a"
+        )
+        assert isinstance(project_cycle, Cycle)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_cycle(client: PlaneClient):
+    try:
+        new_cycle = await client.create_cycle(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            name="This is a New Cycle"
+        )
+        assert isinstance(new_cycle, Cycle)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_cycle(client: PlaneClient):
+    try:
+        updated_cycle = await client.update_cycle(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="b82818b7-d469-4ee6-bb5a-32b753782652",
+            name="This is an Updated Cycle"
+        )
+        assert isinstance(updated_cycle, Cycle)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_cycle(client: PlaneClient):
+    try:
+        deleted_cycle = await client.delete_cycle(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            cycle_id="b82818b7-d469-4ee6-bb5a-32b753782652"
+        )
+        assert isinstance(deleted_cycle, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
