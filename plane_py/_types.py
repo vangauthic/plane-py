@@ -645,3 +645,58 @@ class IntakeIssue:
     updated_by: str
     project: str
     workspace: str
+
+@dataclass
+class IssueType:
+    """
+    Represents a Plane issue type.
+    
+    :param id: UUID of the issue type
+    :type id: str
+    :param name: Name of the issue type
+    :type name: str
+    :param description: Description of the issue type
+    :type description: str
+    :param logo_props: Properties for the issue type logo
+    :type logo_props: dict
+    :param level: Level of the issue type
+    :type level: int
+    :param is_active: Whether the issue type is active
+    :type is_active: bool
+    :param is_default: Whether this is the default issue type
+    :type is_default: bool
+    :param deleted_at: Timestamp when the issue type was deleted
+    :type deleted_at: Optional[str]
+    :param workspace: UUID of the workspace this issue type belongs to
+    :type workspace: str
+    :param project: UUID of the project this issue type belongs to
+    :type project: str
+    :param created_by: UUID of the user who created the issue type
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the issue type
+    :type updated_by: str
+    :param created_at: Timestamp of when the issue type was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the issue type was last updated
+    :type updated_at: str
+    :param external_id: External identifier for the issue type
+    :type external_id: Optional[str]
+    :param external_source: Source of the external issue type
+    :type external_source: Optional[str]
+    """
+    id: str
+    name: str
+    description: str
+    logo_props: dict
+    level: int
+    is_active: bool
+    is_default: bool
+    deleted_at: Optional[str]
+    workspace: str 
+    project: str
+    created_by: str
+    updated_by: str
+    created_at: str
+    updated_at: str
+    external_id: Optional[str]
+    external_source: Optional[str]

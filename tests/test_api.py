@@ -606,3 +606,60 @@ async def test_delete_intake_issue(client: PlaneClient):
         assert isinstance(deleted_intake_issue, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issue_types(client: PlaneClient):
+    try:
+        issue_types = await client.get_issue_types(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(issue_types, list[IssueType])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_type_details(client: PlaneClient):
+    try:
+        issue_type = await client.get_type_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="5ba86e3a-304a-4df2-aceb-5ae5921d4274"
+        )
+        assert isinstance(issue_type, IssueType)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_type(client: PlaneClient):
+    try:
+        new_issue_type = await client.create_type(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            name="This is a New Issue Type",
+            description="Description"
+        )
+        assert isinstance(new_issue_type, IssueType)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_type(client: PlaneClient):
+    try:
+        updated_issue_type = await client.update_type(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="01aa7856-903b-4602-b794-e2ceea5592c8",
+            name="This is an Updated Issue Type",
+            description="New Description"
+        )
+        assert isinstance(updated_issue_type, IssueType)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_issue_type(client: PlaneClient):
+    try:
+        deleted_issue_type = await client.delete_issue_type(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="01aa7856-903b-4602-b794-e2ceea5592c8"
+        )
+        assert isinstance(deleted_issue_type, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
