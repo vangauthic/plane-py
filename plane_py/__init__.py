@@ -16,7 +16,8 @@ PlaneType = Union[
     Module,
     ModuleIssue,
     Cycle,
-    CycleIssue
+    CycleIssue,
+    IntakeIssue
 ]
 
 class PlaneClient(_BaseClient):
@@ -93,6 +94,13 @@ class PlaneClient(_BaseClient):
         async def get_cycle_issues(self, project_id: str, cycle_id: str) -> List[CycleIssue]: ...
         async def create_cycle_issue(self, issues: list[str], project_id: str, cycle_id: str, **kwargs) -> CycleIssue: ...
         async def delete_cycle_issue(self, project_id: str, cycle_id: str, issue_id: str) -> bool: ...
+
+        # IntakeIssue methods
+        async def get_intake_issues(self, project_id: str) -> List[IntakeIssue]: ...
+        async def get_intake_issue_details(self, project_id: str, issue_id: str) -> IntakeIssue: ...
+        async def create_intake_issue(self, issue: dict, project_id: str) -> IntakeIssue: ...
+        async def update_intake_issue(self, issue: dict, project_id: str, issue_id: str) -> IntakeIssue: ...
+        async def delete_intake_issue(self, project_id: str, intake_id: str, issue_id: str) -> bool: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -111,5 +119,6 @@ __all__ = [
     "ModuleIssue",
     "Cycle",
     "CycleIssue",
+    "IntakeIssue",
     "PlaneType"
 ]

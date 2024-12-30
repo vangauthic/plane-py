@@ -602,3 +602,46 @@ class CycleIssue:
     workspace: str
     cycle: str
     issue: str
+
+@dataclass
+class IntakeIssue:
+    """
+    Represents a Plane intake issue.
+    
+    :param id: UUID of the intake issue
+    :type id: str
+    :param pending_issue_count: Number of pending issues
+    :type pending_issue_count: int
+    :param created_at: Timestamp of when the intake issue was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the intake issue was last updated
+    :type updated_at: str
+    :param name: Name of the intake
+    :type name: str
+    :param description: Description of the intake
+    :type description: str
+    :param is_default: Whether this is the default intake
+    :type is_default: bool
+    :param view_props: View properties of the intake
+    :type view_props: dict
+    :param created_by: UUID of the user who created the intake
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the intake
+    :type updated_by: str
+    :param project: UUID of the project this intake belongs to
+    :type project: str
+    :param workspace: UUID of the workspace this intake belongs to
+    :type workspace: str
+    """
+    id: str
+    pending_issue_count: int
+    created_at: str
+    updated_at: str
+    name: str
+    description: str
+    is_default: bool
+    view_props: dict
+    created_by: str
+    updated_by: str
+    project: str
+    workspace: str

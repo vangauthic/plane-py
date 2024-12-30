@@ -550,3 +550,59 @@ async def test_delete_cycle_issue(client: PlaneClient):
         assert isinstance(deleted_cycle_issue, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_intake_issues(client: PlaneClient):
+    try:
+        intake_issues = await client.get_intake_issues(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd"
+        )
+        assert isinstance(intake_issues, list[IntakeIssue])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_intake_issue_details(client: PlaneClient):
+    try:
+        intake_issue = await client.get_intake_issue_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="43340f33-0ab2-49f4-a7f0-382249da1e94"
+        )
+        assert isinstance(intake_issue, IntakeIssue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_intake_issue(client: PlaneClient):
+    try:
+        new_intake_issue = await client.create_intake_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue={"name":"This is a New Issue", "description":"Description"},
+        )
+        assert isinstance(new_intake_issue, IntakeIssue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_intake_issue(client: PlaneClient):
+    try:
+        updated_intake_issue = await client.update_intake_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="8ac2f864-595d-4816-acbf-ffe611c1d607",
+            issue={"name":"This is an Updated Issue", "description":"New Description"}
+        )
+        assert isinstance(updated_intake_issue, IntakeIssue)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_intake_issue(client: PlaneClient):
+    try:
+        deleted_intake_issue = await client.delete_intake_issue(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            intake_id="bd0614d4-a72a-4278-be00-f6b25200d167",
+            issue_id="8ac2f864-595d-4816-acbf-ffe611c1d607"
+        )
+        assert isinstance(deleted_intake_issue, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
