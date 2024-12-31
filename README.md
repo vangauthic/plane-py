@@ -49,6 +49,13 @@ asyncio.run(main())
   - Issue Comments
   - Modules
   - Module Issues
+  - Cycles
+  - Cycle Issues
+  - Intake Issues
+  - Issue Types
+  - Issue Properties
+  - Property Options
+  - Property Values
 
 ## License
 
