@@ -700,3 +700,82 @@ class IssueType:
     updated_at: str
     external_id: Optional[str]
     external_source: Optional[str]
+
+@dataclass
+class IssueProperty:
+    """
+    Represents a Plane issue property.
+    
+    :param id: UUID of the issue property
+    :type id: str
+    :param created_at: Timestamp of when the property was created
+    :type created_at: str
+    :param updated_at: Timestamp of when the property was last updated
+    :type updated_at: str
+    :param deleted_at: Timestamp of when the property was deleted
+    :type deleted_at: Optional[str]
+    :param name: Name of the property
+    :type name: str
+    :param display_name: Display name of the property
+    :type display_name: str
+    :param description: Description of the property
+    :type description: str
+    :param logo_props: Properties for the property logo
+    :type logo_props: dict
+    :param sort_order: Sorting order of the property
+    :type sort_order: float
+    :param property_type: Type of the property (e.g., "OPTION")
+    :type property_type: str
+    :param relation_type: Type of relation if any
+    :type relation_type: Optional[str]
+    :param is_required: Whether the property is required
+    :type is_required: bool
+    :param default_value: Default value of the property
+    :type default_value: list
+    :param settings: Additional settings for the property
+    :type settings: dict
+    :param is_active: Whether the property is active
+    :type is_active: bool
+    :param is_multi: Whether multiple values are allowed
+    :type is_multi: bool
+    :param validation_rules: Rules for validating property values
+    :type validation_rules: dict
+    :param external_source: Source of external property
+    :type external_source: Optional[str]
+    :param external_id: External identifier
+    :type external_id: Optional[str]
+    :param created_by: UUID of the user who created the property
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the property
+    :type updated_by: str
+    :param workspace: UUID of the workspace this property belongs to
+    :type workspace: str
+    :param project: UUID of the project this property belongs to
+    :type project: str
+    :param issue_type: UUID of the issue type this property belongs to
+    :type issue_type: str
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    deleted_at: Optional[str]
+    name: str
+    display_name: str
+    description: str
+    logo_props: dict
+    sort_order: float
+    property_type: str
+    relation_type: Optional[str]
+    is_required: bool
+    default_value: list
+    settings: dict
+    is_active: bool
+    is_multi: bool
+    validation_rules: dict
+    external_source: Optional[str]
+    external_id: Optional[str]
+    created_by: str
+    updated_by: str
+    workspace: str
+    project: str
+    issue_type: str

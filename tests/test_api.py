@@ -663,3 +663,63 @@ async def test_delete_issue_type(client: PlaneClient):
         assert isinstance(deleted_issue_type, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_issue_properties(client: PlaneClient):
+    try:
+        issue_properties = await client.get_issue_properties(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="b5155b66-019b-49f6-8a89-4526bbbf8c56"
+        )
+        assert isinstance(issue_properties, list[IssueProperty])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_property_details(client: PlaneClient):
+    try:
+        issue_property = await client.get_property_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="b5155b66-019b-49f6-8a89-4526bbbf8c56",
+            property_id="8670a483-7713-4f3f-a639-330ad2f81907"
+        )
+        assert isinstance(issue_property, IssueProperty)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_property(client: PlaneClient):
+    try:
+        updated_issue_property = await client.update_property(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="b5155b66-019b-49f6-8a89-4526bbbf8c56",
+            property_id="8670a483-7713-4f3f-a639-330ad2f81907",
+            name="Updated Issue Property"
+        )
+        assert isinstance(updated_issue_property, IssueProperty)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_property(client: PlaneClient):
+    try:
+        new_issue_property = await client.update_property(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="b5155b66-019b-49f6-8a89-4526bbbf8c56",
+            name="New Issue Property"
+        )
+        assert isinstance(new_issue_property, IssueProperty)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_property(client: PlaneClient):
+    try:
+        deleted_issue_property = await client.delete_property(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            type_id="5ba86e3a-304a-4df2-aceb-5ae5921d4274",
+            property_id="a47b4ef5-1cef-41dd-b7ce-8cd23346dce0"
+        )
+        assert isinstance(deleted_issue_property, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
