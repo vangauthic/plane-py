@@ -20,7 +20,8 @@ PlaneType = Union[
     IntakeIssue,
     IssueType,
     IssueProperty,
-    PropertyOption
+    PropertyOption,
+    PropertyValue
 ]
 
 class PlaneClient(_BaseClient):
@@ -125,6 +126,10 @@ class PlaneClient(_BaseClient):
         async def create_option(self, name: str, project_id: str, property_id: str, **kwargs) -> PropertyOption: ...
         async def update_option(self, project_id: str, property_id: str, option_id: str, **kwargs) -> PropertyOption: ...
         async def delete_option(self, project_id: str, property_id: str, option_id: str) -> bool: ...
+
+        # PropertyValue methods
+        async def get_property_values(self, project_id: str, property_id: str, issue_id: str) -> List[PropertyValue]: ...
+        async def create_value(self, values: list, project_id: str, issue_id: str, property_id: str) -> PropertyValue: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -147,5 +152,6 @@ __all__ = [
     "IssueType",
     "IssueProperty",
     "PropertyOption",
+    "PropertyValue",
     "PlaneType"
 ]

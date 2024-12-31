@@ -5,7 +5,7 @@ from plane_py import *
 
 @pytest.fixture
 async def client():
-    return PlaneClient(api_token="plane_api_f237301acce34f43aea61dfc7f1e90c2")
+    return PlaneClient(api_token="")
 
 @pytest.mark.asyncio
 async def test_get_projects(client: PlaneClient):
@@ -781,5 +781,30 @@ async def test_delete_option(client: PlaneClient):
             option_id="fef0416b-4493-4c0a-928e-92ecbfb83fdb"
         )
         assert isinstance(deleted_property_option, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_property_values(client: PlaneClient):
+    try:
+        property_values = await client.get_property_values(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            issue_id="0c039e1d-0be4-4684-9454-18136203491d"
+        )
+        assert isinstance(property_values, list[PropertyValue])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_value(client: PlaneClient):
+    try:
+        new_property_value = await client.create_value(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="0c039e1d-0be4-4684-9454-18136203491d",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            values=["test"]
+        )
+        assert isinstance(new_property_value, PropertyValue)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")

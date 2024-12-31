@@ -1,8 +1,8 @@
 import asyncio
 from plane_py import PlaneClient
-# dropdown PROPERTY ID: e41d0a63-0989-4e73-b7ed-b504a687a74d TYPE ID: 5ba86e3a-304a-4df2-aceb-5ae5921d4274
+
 async def main():
-    client = PlaneClient(api_token="plane_api_575cb3353c4842b5bdd3cc9b50446767", workspace_slug="plane-py")
+    client = PlaneClient(api_token="", workspace_slug="")
     try:
         # issue_types = await client.get_issue_types(project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd")
         # for issue_type in issue_types:
@@ -10,13 +10,20 @@ async def main():
         #     for property in properties:
         #         print(property.name, property.id, issue_type.id)
 
-        deleted_property_option = await client.delete_option(
+        property_values = await client.get_property_values(
             project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
             property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
-            option_id="fef0416b-4493-4c0a-928e-92ecbfb83fdb"
+            issue_id="0c039e1d-0be4-4684-9454-18136203491d"
         )
 
-        print(deleted_property_option)
+        new_property_value = await client.create_value(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            issue_id="0c039e1d-0be4-4684-9454-18136203491d",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            values=["test"]
+        )
+
+        print(property_values)
     except Exception as e:
         print("Error:", e)
 
