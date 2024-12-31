@@ -723,3 +723,63 @@ async def test_delete_property(client: PlaneClient):
         assert isinstance(deleted_issue_property, bool)
     except Exception as e:
         pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_property_options(client: PlaneClient):
+    try:
+        property_options = await client.get_property_options(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d"
+        )
+        assert isinstance(property_options, list[PropertyOption])
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_get_option_details(client: PlaneClient):
+    try:
+        property_option = await client.get_option_details(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            option_id="58851674-024b-4190-9a0b-b64c931b9481"
+        )
+        assert isinstance(property_option, PropertyOption)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_create_option(client: PlaneClient):
+    try:
+        new_property_option = await client.create_option(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            name="New Option"
+        )
+        assert isinstance(new_property_option, PropertyOption)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_update_option(client: PlaneClient):
+    try:
+        updated_property_option = await client.update_option(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            option_id="fef0416b-4493-4c0a-928e-92ecbfb83fdb",
+            name="Updated Option"
+        )
+        assert isinstance(updated_property_option, PropertyOption)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")
+
+@pytest.mark.asyncio
+async def test_delete_option(client: PlaneClient):
+    try:
+        deleted_property_option = await client.delete_option(
+            project_id="65bffcf2-aca0-4305-acaf-d8b0f132c7bd",
+            property_id="e41d0a63-0989-4e73-b7ed-b504a687a74d",
+            option_id="fef0416b-4493-4c0a-928e-92ecbfb83fdb"
+        )
+        assert isinstance(deleted_property_option, bool)
+    except Exception as e:
+        pytest.fail(f"Test failed with exception: {e}")

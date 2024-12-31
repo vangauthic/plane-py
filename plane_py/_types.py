@@ -779,3 +779,64 @@ class IssueProperty:
     workspace: str
     project: str
     issue_type: str
+
+@dataclass
+class PropertyOption:
+    """
+    Represents a Plane property option.
+    
+    :param id: UUID of the property option
+    :type id: str
+    :param created_at: Timestamp of when the option was created
+    :type created_at: str 
+    :param updated_at: Timestamp of when the option was last updated
+    :type updated_at: str
+    :param deleted_at: Timestamp of when the option was deleted
+    :type deleted_at: Optional[str]
+    :param name: Name of the property option
+    :type name: str
+    :param sort_order: Sorting order of the option
+    :type sort_order: float
+    :param description: Description of the property option
+    :type description: str
+    :param logo_props: Properties for the option logo
+    :type logo_props: dict
+    :param is_active: Whether the option is active
+    :type is_active: bool
+    :param is_default: Whether this is the default option
+    :type is_default: bool
+    :param external_source: Source of external option
+    :type external_source: Optional[str]
+    :param external_id: External identifier
+    :type external_id: Optional[str]
+    :param created_by: UUID of the user who created the option
+    :type created_by: str
+    :param updated_by: UUID of the user who last updated the option
+    :type updated_by: str
+    :param workspace: UUID of the workspace this option belongs to
+    :type workspace: str
+    :param project: UUID of the project this option belongs to
+    :type project: str
+    :param property: UUID of the property this option belongs to
+    :type property: str
+    :param parent: UUID of the parent option if any
+    :type parent: Optional[str]
+    """
+    id: str
+    created_at: str
+    updated_at: str
+    deleted_at: Optional[str]
+    name: str
+    sort_order: float
+    description: str
+    logo_props: dict
+    is_active: bool
+    is_default: bool
+    external_source: Optional[str]
+    external_id: Optional[str]
+    created_by: str
+    updated_by: str
+    workspace: str
+    project: str
+    property: str
+    parent: Optional[str]

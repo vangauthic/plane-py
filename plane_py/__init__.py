@@ -19,12 +19,13 @@ PlaneType = Union[
     CycleIssue,
     IntakeIssue,
     IssueType,
-    IssueProperty
+    IssueProperty,
+    PropertyOption
 ]
 
 class PlaneClient(_BaseClient):
     """
-    Main client class with type hints for better IDE support
+    FULL DOCUMENTATION AVAILABLE AT https://developers.plane.so/api-reference/
     """
     if TYPE_CHECKING:
         # Project methods
@@ -117,6 +118,13 @@ class PlaneClient(_BaseClient):
         async def create_property(self, name: str, project_id: str, type_id: str, **kwargs) -> IssueProperty: ...
         async def update_property(self, project_id: str, type_id: str, property_id: str, **kwargs) -> IssueProperty: ...
         async def delete_property(self, project_id: str, type_id: str, property_id: str) -> bool: ...
+
+        # PropertyOption methods
+        async def get_property_options(self, project_id: str, property_id: str) -> List[PropertyOption]: ...
+        async def get_option_details(self, project_id: str, property_id: str, option_id: str) -> PropertyOption: ...
+        async def create_option(self, name: str, project_id: str, property_id: str, **kwargs) -> PropertyOption: ...
+        async def update_option(self, project_id: str, property_id: str, option_id: str, **kwargs) -> PropertyOption: ...
+        async def delete_option(self, project_id: str, property_id: str, option_id: str) -> bool: ...
         
         # Internal method
         async def _request(self, method: str, endpoint: str, **kwargs) -> Optional[Dict[str, Any]]: ...
@@ -138,5 +146,6 @@ __all__ = [
     "IntakeIssue",
     "IssueType",
     "IssueProperty",
+    "PropertyOption",
     "PlaneType"
 ]
